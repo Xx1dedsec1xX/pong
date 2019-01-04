@@ -51,7 +51,7 @@ VIRTUAL_HEIGHT = 243
 -- speed at which we will move our paddle; multiplied by dt in update
 PADDLE_SPEED = 200
 con=0.05
-
+tim=0
 --[[
     Runs when the game first starts up, only once; used to initialize the game.
 ]]
@@ -119,6 +119,8 @@ end
     since the last frame, which LÖVE2D supplies us.
 ]]
 function love.update(dt)
+  tim=tim+1
+
     if gameState == 'serve' then
         -- before switching to play, initialize ball's velocity based
         -- on player who last scored
@@ -216,8 +218,19 @@ function love.update(dt)
     end
 
     -- player 2 movement
-player2.y=ball.y
+    local ran=math.random(1,1000)
+if ball.x<403 then
+    player2.y=ball.y-9
 
+  elseif ball.dy<0 then
+    if ran%5==0 then
+      player2.y=player2.y+2
+ end
+elseif ball.dy>0 then
+  if ran%5==0 then
+    player2.y=player2.y-2
+  end
+end
     -- update our ball based on its DX and DY only if we're in play state;
     -- scale the velocity by dt so movement is framerate-independent
     if gameState == 'play' then
